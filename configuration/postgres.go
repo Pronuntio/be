@@ -1,8 +1,8 @@
-package confguration
+package configuration
 
 type PostgresConfiguration struct {
-	Address string
+	Address  string
 	Username string
 	Password string
-	DBName string
+	DBName   string
 }
