@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/pronuntio/core/configuraiton"
+	"github.com/pronuntio/core/configuration"
 )
 
 func main() {
