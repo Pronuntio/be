@@ -4,6 +4,14 @@ import "flag"
 
 type ApplicationConfiguration struct {
 	HttpAddr string
+	PgConfig *PostgresConfiguration
+}
+
+func NewApplicationConfiguration() *ApplicationConfiguration {
+	return &ApplicationConfiguration{
+		HttpAddr: "",
+		PgConfig: &PostgresConfiguration{},
+	}
 }
 
 func ParseArgs() *ApplicationConfiguration {
