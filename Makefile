@@ -31,6 +31,3 @@ clean:
 docker:
 	docker build .
 
-clean:
-	rm -rf bin/
-
