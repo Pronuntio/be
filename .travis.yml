@@ -1,4 +1,4 @@
 language: go
 go: "1.11"
-go_import_path: github.com/protuntio/core
+go_import_path: github.com/pronuntio/core
 script: make all
