@@ -3,7 +3,6 @@ package word
 import (
 	"database/sql"
 
-	"github.com/pronuntio/core/domain/word"
 	"go.uber.org/zap"
 )
 
@@ -19,7 +18,7 @@ func NewPostgresWordDao(conn *sql.DB, log *zap.Logger) *PostgresWordDao {
 	}
 }
 
-func (p *PostgresWordDao) GetWord(ID uint64) (*word.Word, error) {
+func (p *PostgresWordDao) GetWord(ID uint64) (*Word, error) {
 	rows, err := p.conn.Query("SELECT text_original, text_english, status, filename FROM pronuntio.words")
 	if err != nil {
 		p.log.Error("unable to get word", zap.Uint64("id", ID), zap.Error(err))
@@ -31,7 +30,7 @@ func (p *PostgresWordDao) GetWord(ID uint64) (*word.Word, error) {
 		ID: ID,
 	}
 
-	err := rows.Scan(&w.NativeName, &w.EnglishName, &w.Status, &w.Filename)
+	err = rows.Scan(&w.NativeName, &w.EnglishName, &w.Status, &w.Filename)
 	if err != nil {
 		p.log.Error("unable to scan values", zap.Uint64("id", ID), zap.Error(err))
 		return nil, err
@@ -41,7 +40,8 @@ func (p *PostgresWordDao) GetWord(ID uint64) (*word.Word, error) {
 }
 
 func (p *PostgresWordDao) DeleteWord(ID uint64) error {
-	return p.conn.Exec("DELETE FROM pronuntio.words WHERE ID = $1", ID)
+	_, err := p.conn.Exec("DELETE FROM pronuntio.words WHERE ID = $1", ID)
+	return err
 }
 
 func (p *PostgresWordDao) CreateWord(word *Word) (uint64, error) {
