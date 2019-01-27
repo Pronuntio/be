@@ -1,8 +1,10 @@
 package word
 
-type WordModel struct {
-	ID string
+type Word struct {
+	ID          uint64
 	EnglishName string
-	NativeName string
-	payload []byte
+	NativeName  string
+	Filename    string
+	Status      string
+	payload     []byte
 }
