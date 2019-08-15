@@ -16,7 +16,7 @@ endif
 
 .PHONY: all build clean test docker
 
-all: clean build test
+all: clean build test docker
 
 dep:
 	dep ensure -v --vendor-only
@@ -32,5 +32,5 @@ clean:
 	rm -rf bin/
 
 docker:
-	docker build .
+	docker build . -t pronuntio-server:$(VERSION)
 

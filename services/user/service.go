@@ -9,11 +9,11 @@ import (
 )
 
 type UserService struct {
-	dao *user.Dao
+	dao user.Dao
 	l   *zap.Logger
 }
 
-func (us *UserService) NewUserService(dao *user.Dao, l *zap.Logger) *UserService {
+func NewUserService(dao user.Dao, l *zap.Logger) *UserService {
 	return &UserService{
 		dao: dao,
 		l:   l,
