@@ -1,7 +1,8 @@
 package configuration
 
 type PostgresConfiguration struct {
-	Address  string
+	Host     string
+	Port     uint32
 	Username string
 	Password string
 	DBName   string

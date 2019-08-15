@@ -18,6 +18,9 @@ endif
 
 all: clean build test
 
+dep:
+	dep ensure -v --vendor-only
+
 build:
 	mkdir -p bin/
 	CGO_ENABLED=0 GOOS=$(TARGET_OS) go build -ldflags "${LDFLAGS}" -a -o bin/${SERVICE}
