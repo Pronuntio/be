@@ -5,4 +5,5 @@ type Dao interface {
 	DeleteUser(ID uint64) error
 	CreateUser(user *User) (uint64, error)
 	UpdateUser(user *User) error
+	ListUsers() ([]*User, error)
 }

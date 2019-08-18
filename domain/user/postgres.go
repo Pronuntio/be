@@ -18,6 +18,26 @@ func NewPostgresUserDao(conn *sql.DB, log *zap.Logger) *PostgresUserDao {
 	}
 }
 
+func (p *PostgresUserDao) ListUsers() ([]*User, error) {
+	rows, err := p.conn.Query("SELECT id, name, email, password, orgname FROM pronuntio.users")
+	if err != nil {
+		p.log.Error("unable to get a list of users", zap.Error(err))
+		return nil, err
+	}
+
+	result := []*User{}
+	for rows.Next() {
+		u := &User{}
+
+		err = rows.Scan(&u.ID, &u.Name, &u.Email, &u.Password, &u.Organization)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, u)
+	}
+	return result, nil
+}
+
 func (p *PostgresUserDao) GetUser(ID uint64) (*User, error) {
 	rows, err := p.conn.Query("SELECT name, email, password, orgname FROM pronuntio.users WHERE id = $1", ID)
 	if err != nil {

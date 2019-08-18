@@ -18,8 +18,28 @@ func NewPostgresWordDao(conn *sql.DB, log *zap.Logger) *PostgresWordDao {
 	}
 }
 
+func (p *PostgresWordDao) ListWords() ([]*Word, error) {
+	rows, err := p.conn.Query("SELECT id, text_original, text_english, status, filename FROM pronuntio.words")
+	if err != nil {
+		p.log.Error("unable to get a list of words", zap.Error(err))
+		return nil, err
+	}
+
+	result := []*Word{}
+	for rows.Next() {
+		w := &Word{}
+
+		err = rows.Scan(&w.ID, &w.NativeName, &w.EnglishName, &w.Status, &w.Filename)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, w)
+	}
+	return result, nil
+}
+
 func (p *PostgresWordDao) GetWord(ID uint64) (*Word, error) {
-	rows, err := p.conn.Query("SELECT text_original, text_english, status, filename FROM pronuntio.words")
+	rows, err := p.conn.Query("SELECT text_original, text_english, status, filename FROM pronuntio.words WHERE id = $1", ID)
 	if err != nil {
 		p.log.Error("unable to get word", zap.Uint64("id", ID), zap.Error(err))
 		return nil, err

@@ -8,5 +8,14 @@ import (
 )
 
 func NewPostgresConnection(host string, port uint, dbname, user, pass string) (*sql.DB, error) {
-	return sql.Open("postgres", fmt.Sprintf("%s:%s@%s:%d/%s", user, pass, host, port, dbname))
+	conn, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, pass, dbname))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := conn.Ping(); err != nil {
+		return nil, err
+	}
+	return conn, nil
 }

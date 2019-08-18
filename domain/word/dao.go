@@ -5,4 +5,5 @@ type Dao interface {
 	DeleteWord(ID uint64) error
 	CreateWord(word *Word) (uint64, error)
 	UpdateWord(word *Word) error
+	ListWords() ([]*Word, error)
 }

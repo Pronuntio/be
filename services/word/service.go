@@ -1,6 +1,7 @@
 package word
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -28,5 +29,12 @@ func (ws *WordService) GetRoutes(router *mux.Router) *mux.Router {
 }
 
 func (ws *WordService) ListWords(w http.ResponseWriter, r *http.Request) {
-
+	words, err := ws.dao.ListWords()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(words)
 }
