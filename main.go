@@ -28,6 +28,8 @@ func main() {
 		os.Exit(-1)
 	}
 
+	l.Info("stated with configuration", zap.Any("config", appConf))
+
 	pgConn, err := databases.NewPostgresConnection(
 		appConf.PgConfig.Host,
 		appConf.PgConfig.Port,
@@ -36,7 +38,7 @@ func main() {
 		appConf.PgConfig.Password,
 	)
 	if err != nil {
-		fmt.Printf("unable to create pg db connection: %s\r\n", err.Error())
+		l.Error("unable to create pg db connection", zap.Error(err))
 		os.Exit(-1)
 	}
 
@@ -53,14 +55,15 @@ func main() {
 		appConf.HttpHost,
 		appConf.HttpPort,
 		hRouter,
-		l,
+		l.Named("http-server"),
 	)
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGHUP, syscall.SIGTERM)
 
+	l.Info("starting server...")
 	hServer.Start(appContext)
-
+	l.Info("server started")
 	for {
 		select {
 		case <-sigCh:

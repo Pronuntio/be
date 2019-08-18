@@ -33,4 +33,4 @@ clean:
 
 docker:
 	docker build . -t pronuntio-server:$(VERSION)
-
+	docker build scripts/pg -t pronuntio-db:$(VERSION)

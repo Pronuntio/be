@@ -10,6 +10,14 @@ CREATE SEQUENCE pronuntio.u_pk_seq START WITH 200000000;
 
 CREATE TYPE pronuntio.word_status_type AS ENUM ('private', 'public');
 
+CREATE TABLE pronuntio.users (
+    id INTEGER UNIQUE PRIMARY KEY DEFAULT nextval('pronuntio.u_pk_seq'::regclass) NOT NULL,
+    name VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL,
+    password VARCHAR (250) NOT NULL,
+    orgname VARCHAR (250) NOT NULL
+);
+
 CREATE TABLE pronuntio.words (
     id INTEGER UNIQUE PRIMARY KEY DEFAULT nextval('pronuntio.w_pk_seq'::regclass) NOT NULL,
     text_original TEXT NOT NULL,
@@ -18,10 +26,3 @@ CREATE TABLE pronuntio.words (
     filename VARCHAR(250) NOT NULL
 );
 
-CREATE TABLE pronuntio.users (
-    id INTEGER UNIQUE PRIMARY KEY DEFAULT nextval('pronuntio.u_pk_seq'::regclass) NOT NULL,
-    name VARCHAR(250) NOT NULL,
-    email VARCHAR(250) NOT NULL,
-    password VARCHAR (250) NOT NULL,
-    orgname VARCHAR (250) NOT NULL,
-)

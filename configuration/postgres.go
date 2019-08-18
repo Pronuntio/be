@@ -2,7 +2,7 @@ package configuration
 
 type PostgresConfiguration struct {
 	Host     string
-	Port     uint32
+	Port     uint
 	Username string
 	Password string
 	DBName   string
