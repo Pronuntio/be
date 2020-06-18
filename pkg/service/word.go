@@ -1,11 +1,11 @@
-package word
+package service
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/pronuntio/core/domain/word"
+	"github.com/pronuntio/core/pkg/word"
 	"go.uber.org/zap"
 )
 

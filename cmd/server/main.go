@@ -9,12 +9,12 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/pronuntio/core/configuration"
-	"github.com/pronuntio/core/domain/user"
-	"github.com/pronuntio/core/domain/word"
-	"github.com/pronuntio/core/infrastructure/databases"
-	"github.com/pronuntio/core/server"
-	us "github.com/pronuntio/core/services/user"
-	ws "github.com/pronuntio/core/services/word"
+	db "github.com/pronuntio/core/pkg/infra/db"
+	server "github.com/pronuntio/core/pkg/infra/httpserver"
+	service "github.com/pronuntio/core/pkg/service"
+	"github.com/pronuntio/core/pkg/user"
+	"github.com/pronuntio/core/pkg/word"
+	"github.com/pronuntio/core/version"
 	"go.uber.org/zap"
 )
 
@@ -28,9 +28,15 @@ func main() {
 		os.Exit(-1)
 	}
 
+	if appConf.Version {
+		fmt.Println("version:", version.Revision)
+		fmt.Println("build time:", version.BuildTime)
+		os.Exit(0)
+	}
+
 	l.Info("stated with configuration", zap.Any("config", appConf))
 
-	pgConn, err := databases.NewPostgresConnection(
+	pgConn, err := db.NewPostgresConnection(
 		appConf.PgConfig.Host,
 		appConf.PgConfig.Port,
 		appConf.PgConfig.DBName,
@@ -45,8 +51,8 @@ func main() {
 	pgUserDao := user.NewPostgresUserDao(pgConn, l.Named("pg_user_dao"))
 	pgWordDao := word.NewPostgresWordDao(pgConn, l.Named("pg_word_dao"))
 
-	userService := us.NewUserService(pgUserDao, l.Named("user_service"))
-	wordService := ws.NewWordService(pgWordDao, l.Named("word_service"))
+	userService := service.NewUserService(pgUserDao, l.Named("user_service"))
+	wordService := service.NewWordService(pgWordDao, l.Named("word_service"))
 
 	hRouter := mux.NewRouter()
 	userService.GetRoutes(hRouter)

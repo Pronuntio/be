@@ -6,8 +6,7 @@ COMMIT := ${shell git rev-parse HEAD}
 BUILDTIME := ${shell date -u '+%Y-%m-%d_%H:%M:%S'}
 LDFLAGS := -s -w -X '${PACKAGE}/version.Version=${VERSION}' \
 					-X '${PACKAGE}/version.BuildTime=${BUILDTIME}' \
-					-X '${PACKAGE}/version.Commit=${COMMIT}' \
-					-X '${PACKAGE}/version.CommitMsg=${COMMITMSG}'
+					-X '${PACKAGE}/version.Revision=${COMMIT}'
 ifdef OSX
 	TARGET_OS=darwin
 else
@@ -23,7 +22,7 @@ dep:
 
 build:
 	mkdir -p bin/
-	CGO_ENABLED=0 GOOS=$(TARGET_OS) go build -ldflags "${LDFLAGS}" -a -o bin/${SERVICE}
+	CGO_ENABLED=0 GOOS=$(TARGET_OS) go build -ldflags "${LDFLAGS}" -a -o bin/${SERVICE} cmd/server/main.go
 
 test:
 	go test ./...
