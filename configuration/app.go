@@ -6,6 +6,7 @@ type ApplicationConfiguration struct {
 	HttpHost string
 	HttpPort uint
 	PgConfig *PostgresConfiguration
+	Version  bool
 }
 
 func NewApplicationConfiguration() *ApplicationConfiguration {
@@ -26,6 +27,7 @@ func ParseArgs() *ApplicationConfiguration {
 	flag.StringVar(&c.PgConfig.Username, "pg.user", "", "pg user")
 	flag.StringVar(&c.PgConfig.Password, "pg.pass", "", "pg password")
 	flag.StringVar(&c.PgConfig.DBName, "pg.dbname", "", "pg db name")
+	flag.BoolVar(&c.Version, "v", false, "prints app version")
 	flag.Parse()
 
 	return c

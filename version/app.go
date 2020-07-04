@@ -1,7 +1,6 @@
 package version
 
-const (
-	VERSION    = "unset"
-	BUILD_TIME = "unset"
-	COMMIT     = "unset"
+var (
+	BuildTime = "unset"
+	Revision  = "unset"
 )

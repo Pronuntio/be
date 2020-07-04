@@ -1,11 +1,11 @@
-package user
+package service
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/pronuntio/core/domain/user"
+	"github.com/pronuntio/core/pkg/user"
 	"go.uber.org/zap"
 )
 
